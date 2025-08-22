@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { User, LogOut, Settings } from 'lucide-react'
+import { User, LogOut, Settings } from "lucide-react"
 import { useAuth } from "@/components/auth/auth-provider"
 
 export function UserMenu() {
@@ -38,11 +38,12 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      {/* <CHANGE> Fixed dropdown trigger by removing asChild and making it a proper button */}
-      <DropdownMenuTrigger className="relative h-10 w-10 rounded-full border-0 bg-transparent hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-        <Avatar className="h-10 w-10">
-          <AvatarFallback>{initials}</AvatarFallback>
-        </Avatar>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+          <Avatar className="h-10 w-10">
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
