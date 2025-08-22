@@ -1,7 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-
-@custom-variant dark (&:is(.dark *));
+@import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
   --background: oklch(1 0 0);
@@ -74,6 +72,7 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* Removed invalid @custom-variant syntax and used standard CSS approach */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -111,6 +110,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Added font variable mappings for proper font loading */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @layer base {
