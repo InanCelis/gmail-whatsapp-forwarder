@@ -7,6 +7,8 @@ import { EmailForwardingRules } from "@/components/email-forwarding-rules"
 import { AuthProvider } from "@/components/auth/auth-provider"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { UserMenu } from "@/components/user-menu"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 function DashboardContent() {
   return (
@@ -17,7 +19,14 @@ function DashboardContent() {
             <h1 className="text-3xl font-bold text-foreground mb-2">Gmail to WhatsApp Forwarder</h1>
             <p className="text-muted-foreground">Automatically forward specific Gmail messages to WhatsApp</p>
           </div>
-          <UserMenu />
+          <div className="flex items-center gap-4">
+            <Link href="/dns-check">
+              <Button variant="outline" size="sm">
+                DNS Check Tool
+              </Button>
+            </Link>
+            <UserMenu />
+          </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
