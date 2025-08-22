@@ -89,7 +89,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">{isLogin ? "Welcome Backs" : "Create Account"}</CardTitle>
+          <CardTitle className="text-2xl font-bold">{isLogin ? "Welcome Back" : "Create Account"}</CardTitle>
           <CardDescription>
             {isLogin
               ? "Sign in to access your Gmail-WhatsApp forwarder"
