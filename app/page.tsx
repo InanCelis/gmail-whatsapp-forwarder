@@ -1,14 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Mail, MessageCircle, Settings } from 'lucide-react'
+import { Mail, MessageCircle, Settings } from "lucide-react"
 import { GmailConnection } from "@/components/gmail-connection"
 import { WhatsAppConnection } from "@/components/whatsapp-connection"
 import { EmailForwardingRules } from "@/components/email-forwarding-rules"
 import { AuthProvider } from "@/components/auth/auth-provider"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { UserMenu } from "@/components/user-menu"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
 
 function DashboardContent() {
   return (
@@ -19,14 +17,7 @@ function DashboardContent() {
             <h1 className="text-3xl font-bold text-foreground mb-2">Gmail to WhatsApp Forwarder</h1>
             <p className="text-muted-foreground">Automatically forward specific Gmail messages to WhatsApp</p>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/admin">
-              <Button variant="outline" size="sm">
-                Admin Panel
-              </Button>
-            </Link>
-            <UserMenu />
-          </div>
+          <UserMenu />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
