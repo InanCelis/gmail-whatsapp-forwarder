@@ -1,19 +1,16 @@
 "use client"
 
 import type React from "react"
-
 import { createContext, useContext, useEffect, useState } from "react"
-
-interface User {
-  id: string
-  email: string
-}
+import { createBrowserClient } from "@supabase/ssr"
+import type { User } from "@supabase/supabase-js"
 
 interface AuthContextType {
   user: User | null
   isLoading: boolean
-  login: (token: string) => void
-  logout: () => void
+  signUp: (email: string, password: string) => Promise<{ error: any }>
+  signIn: (email: string, password: string) => Promise<{ error: any }>
+  signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -22,49 +19,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
+
   useEffect(() => {
-    const token = localStorage.getItem("auth_token")
-    if (token) {
-      // Verify token and get user info
-      verifyToken(token)
-    } else {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
       setIsLoading(false)
     }
-  }, [])
 
-  const verifyToken = async (token: string) => {
-    try {
-      const response = await fetch("/api/auth/verify", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    getSession()
 
-      if (response.ok) {
-        const userData = await response.json()
-        setUser(userData.user)
-      } else {
-        localStorage.removeItem("auth_token")
-      }
-    } catch (error) {
-      console.error("Token verification failed:", error)
-      localStorage.removeItem("auth_token")
-    } finally {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user ?? null)
       setIsLoading(false)
-    }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [supabase.auth])
+
+  const signUp = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback`,
+      },
+    })
+    return { error }
   }
 
-  const login = (token: string) => {
-    localStorage.setItem("auth_token", token)
-    verifyToken(token)
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    return { error }
   }
 
-  const logout = () => {
-    localStorage.removeItem("auth_token")
-    setUser(null)
+  const signOut = async () => {
+    await supabase.auth.signOut()
   }
 
-  return <AuthContext.Provider value={{ user, isLoading, login, logout }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, isLoading, signUp, signIn, signOut }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
