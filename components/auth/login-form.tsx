@@ -1,49 +1,55 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Eye, EyeOff, Mail, Lock } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface LoginFormProps {
-  onSuccess: () => void
+  onSuccess: () => void;
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  const [isLogin, setIsLogin] = useState(true)
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
-  })
-  const [error, setError] = useState("")
-  const { toast } = useToast()
+  });
+  const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const handleGoogleLogin = () => {
-    window.location.href = "/api/auth/google"
-  }
+    window.location.href = "/api/auth/google";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      setIsLoading(false)
-      return
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
     }
 
     try {
-      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register"
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -53,34 +59,36 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           email: formData.email,
           password: formData.password,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("auth_token", data.token)
+        localStorage.setItem("auth_token", data.token);
         toast({
-          title: isLogin ? "Welcome back!" : "Account created!",
+          title: isLogin ? "Welcome backs!" : "Account created!",
           description: isLogin
             ? "You have been logged in successfully."
             : "Your account has been created and you are now logged in.",
-        })
-        onSuccess()
+        });
+        onSuccess();
       } else {
-        setError(data.error || "Authentication failed")
+        setError(data.error || "Authentication failed");
       }
     } catch (error) {
-      setError("Network error. Please try again.")
+      setError("Network error. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">{isLogin ? "Welcome Back" : "Create Account"}</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            {isLogin ? "Welcome Backs" : "Create Account"}
+          </CardTitle>
           <CardDescription>
             {isLogin
               ? "Sign in to access your Gmail-WhatsApp forwarder"
@@ -95,7 +103,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               </Alert>
             )}
 
-            <Button type="button" variant="outline" className="w-full bg-transparent" onClick={handleGoogleLogin}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full bg-transparent"
+              onClick={handleGoogleLogin}
+            >
               <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -122,7 +135,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
               </div>
             </div>
 
@@ -135,7 +150,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className="pl-10"
                   required
                 />
@@ -151,7 +168,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   className="pl-10 pr-10"
                   required
                 />
@@ -181,7 +200,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Confirm your password"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     className="pl-10"
                     required
                   />
@@ -190,17 +214,28 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             )}
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
+              {isLoading
+                ? "Please wait..."
+                : isLogin
+                ? "Sign In"
+                : "Create Account"}
             </Button>
 
             <div className="text-center">
-              <Button type="button" variant="link" onClick={() => setIsLogin(!isLogin)} className="text-sm">
-                {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-sm"
+              >
+                {isLogin
+                  ? "Don't have an account? Sign up"
+                  : "Already have an account? Sign in"}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
