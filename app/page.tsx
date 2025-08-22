@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Mail, MessageCircle, Settings } from "lucide-react"
+import { Mail, MessageCircle, Settings } from 'lucide-react'
 import { GmailConnection } from "@/components/gmail-connection"
 import { WhatsAppConnection } from "@/components/whatsapp-connection"
 import { EmailForwardingRules } from "@/components/email-forwarding-rules"
@@ -20,11 +20,6 @@ function DashboardContent() {
             <p className="text-muted-foreground">Automatically forward specific Gmail messages to WhatsApp</p>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/dns-check">
-              <Button variant="outline" size="sm">
-                DNS Check Tool
-              </Button>
-            </Link>
             <Link href="/admin">
               <Button variant="outline" size="sm">
                 Admin Panel
