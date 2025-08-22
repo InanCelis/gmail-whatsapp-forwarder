@@ -25,6 +25,11 @@ function DashboardContent() {
                 DNS Check Tool
               </Button>
             </Link>
+            <Link href="/admin">
+              <Button variant="outline" size="sm">
+                Admin Panel
+              </Button>
+            </Link>
             <UserMenu />
           </div>
         </div>
