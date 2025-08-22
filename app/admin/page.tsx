@@ -17,6 +17,10 @@ export default async function AdminPage() {
     redirect("/auth/login")
   }
 
+  if (user.email !== "celisinan@gmail.com") {
+    redirect("/")
+  }
+
   // Check if user is admin
   const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single()
 
